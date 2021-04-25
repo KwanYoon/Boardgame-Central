@@ -1,0 +1,17 @@
+.square {
+    width: 100px;
+    height: 100px;
+    border: 2px solid;
+    border-color: black;
+    background-color: white;
+    cursor: pointer;
+    font-size: xx-large;
+    font-weight: bold;
+    float: left;
+}
+
+.rows:after {
+    clear: both;
+    content: "";
+    display: table;
+}

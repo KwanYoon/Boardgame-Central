@@ -2,7 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 
+const Games = () => {
+    return (
+        <App />
+    );
+}
+
 ReactDOM.render(
-    <App />,
+    <Games />,
     document.getElementById('root')
 );
