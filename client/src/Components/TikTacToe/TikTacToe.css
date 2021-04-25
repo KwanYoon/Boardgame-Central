@@ -1,11 +1,36 @@
+.title {
+    font-size: xx-large;
+    text-align: center;
+    font-weight: bold;
+}
+
+.turn {
+    font-size: x-large;
+    margin-bottom: 100px;
+}
+
+.board {
+    padding-left: 200px;
+    width: 450px;
+    height: 450px;
+    float: left;
+}
+
+.sidebar {
+    margin-left: 650px;
+    margin-right: 100px;
+    padding-top: 150px;
+    text-align: center;
+}
+
 .square {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     border: 2px solid;
     border-color: black;
     background-color: white;
     cursor: pointer;
-    font-size: xx-large;
+    font-size: 100px;
     font-weight: bold;
     float: left;
 }

@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import './TikTacToe.css';
 
 function calculateWinner(squares) {
@@ -109,9 +111,15 @@ class TikTacToe extends React.Component {
 
         return (
             <div>
-                <div>{statusCheck}</div>
-                <Board square={this.state.square} handleClick={(i) => this.handleClick(i)} />
-                <button onClick={() => this.reset()}>Reset Board</button>
+                <div className="title">TikTacToe</div>
+                <div className="board">
+                    <Board square={this.state.square} handleClick={(i) => this.handleClick(i)} />
+                </div>
+                <div className="sidebar">
+                    <div className="turn">{statusCheck}</div>
+                    <button onClick={() => this.reset()}>Reset Board</button>
+                    <Link to="/"><button>Go to Home</button></Link>
+                </div>
             </div>
         );
     }
