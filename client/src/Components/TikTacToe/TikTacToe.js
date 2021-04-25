@@ -39,49 +39,13 @@ const Square = (props) => {
 }
 
 class Board extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            square: Array(9).fill(null),
-            xTurn: true,
-        };
-    }
-
-    handleClick(i) {
-        console.log(this.state.square);
-        var square = this.state.square.slice();
-        if (calculateWinner(square) || square[i]) {
-            return;
-        }
-        if (this.state.xTurn) {
-            square[i] = 'X';
-        } else {
-            square[i] = 'O';
-        }
-        this.setState({square: square});
-        this.setState({xTurn: !this.state.xTurn});
-    }
-
     square(i) {
-        return <Square value={this.state.square[i]} handleClick={() => this.handleClick(i)} />;
+        return <Square value={this.props.square[i]} handleClick={() => this.props.handleClick(i)} />;
     }
 
     render() {
-        // checking status of the game
-        var statusCheck;
-        if (calculateWinner(this.state.square)) {
-            statusCheck = 'Winner: ' + calculateWinner(this.state.square);
-        } else if (calculateDraw(this.state.square)) {
-            statusCheck = 'Draw';
-        } else if (this.state.xTurn) {
-            statusCheck = 'X to go';
-        } else {
-            statusCheck = 'O to go';
-        }
-        
         return (
             <div>
-                <div>{statusCheck}</div>
                 <div className="rows">
                     {this.square(0)}
                     {this.square(1)}
@@ -103,10 +67,51 @@ class Board extends React.Component {
 }
 
 class TikTacToe extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            square: Array(9).fill(null),
+            xTurn: true,
+        };
+    }
+
+    handleClick(i) {
+        var square = this.state.square.slice();
+        if (calculateWinner(square) || square[i]) {
+            return;
+        }
+        if (this.state.xTurn) {
+            square[i] = 'X';
+        } else {
+            square[i] = 'O';
+        }
+        this.setState({square: square});
+        this.setState({xTurn: !this.state.xTurn});
+    }
+
+    reset() {
+        var emptySquare = Array(9).fill(null);
+        this.setState({square: emptySquare, xTurn: true});
+    }
+
     render() {
+        // checking status of the game
+        var statusCheck;
+        if (calculateWinner(this.state.square)) {
+            statusCheck = 'Winner: ' + calculateWinner(this.state.square);
+        } else if (calculateDraw(this.state.square)) {
+            statusCheck = 'Draw';
+        } else if (this.state.xTurn) {
+            statusCheck = 'X to go';
+        } else {
+            statusCheck = 'O to go';
+        }
+
         return (
             <div>
-                <Board />
+                <div>{statusCheck}</div>
+                <Board square={this.state.square} handleClick={(i) => this.handleClick(i)} />
+                <button onClick={() => this.reset()}>Reset Board</button>
             </div>
         );
     }
