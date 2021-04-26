@@ -3,14 +3,16 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import './App.css';
 import Home from './Components/Home/Home';
-import TikTacToe from './Components/TikTacToe/TikTacToe';
+import TicTacToe from './Components/TicTacToe/TicTacToe';
+import TicTacToeLogin from './Components/TicTacToe/TicTacToeLogin';
 
 const App = () => {
     return (
         <BrowserRouter>
             <Switch>
                 <Route exact path='/' component={Home} />
-                <Route exact path='/tiktactoe' component={TikTacToe} />
+                <Route exact path='/tictactoe' component={TicTacToe} />
+                <Route exact path='/tictactoeonline' component={TicTacToeLogin} />
             </Switch>
         </BrowserRouter>
     );
