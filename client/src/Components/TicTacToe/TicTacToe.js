@@ -131,10 +131,8 @@ const TicTacToe = ({ location }) => {
 
     // function to reset
     const reset = () => {
-        var newSquare = square;
+        var newSquare = Array(9).fill(null);
         const newTurn = true;
-        newSquare = Array(9).fill(null);
-        
         socket.emit('move', { newSquare, newTurn, room });
     }
 

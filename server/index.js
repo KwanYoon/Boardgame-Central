@@ -25,7 +25,6 @@ io.on('connection', (socket) => {
 
     // on move
     socket.on('move', ({ newSquare, newTurn, room }) => {
-        
         io.to(room).emit('moving', { newSquare, newTurn });
     });
 
