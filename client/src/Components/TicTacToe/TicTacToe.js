@@ -81,6 +81,7 @@ const TicTacToe = ({ location }) => {
 
     // joining a room
     useEffect(() => {
+        // making a room based on current url
         const { room } = queryString.parse(location.search);
 
         var connectionOptions =  {
@@ -93,6 +94,7 @@ const TicTacToe = ({ location }) => {
 
         setRoom(room);
 
+        // join the room
         socket.emit('join', { room }, () => {
             // reaction to callback
         });
