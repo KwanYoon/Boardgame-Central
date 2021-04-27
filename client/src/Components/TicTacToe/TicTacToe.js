@@ -107,11 +107,11 @@ const TicTacToe = ({ location }) => {
     // effect on moving
     useEffect(() => {
         socket.on('moving', ({ newSquare, newTurn }) => {
-            console.log(newTurn);
+            
             setSquare(newSquare);
             setXTurn(newTurn);
         });
-    }, [xTurn]);
+    });
 
     // function to handle clicking
     const handleClick = (i) => {
@@ -125,16 +125,17 @@ const TicTacToe = ({ location }) => {
         } else {
             newSquare[i] = 'O';
         }
-        console.log(newTurn);
         
         socket.emit('move', { newSquare, newTurn, room });
     }
 
     // function to reset
     const reset = () => {
-        var emptySquare = Array(9).fill(null);
-        setSquare(emptySquare);
-        setXTurn(true);
+        var newSquare = square;
+        const newTurn = true;
+        newSquare = Array(9).fill(null);
+        
+        socket.emit('move', { newSquare, newTurn, room });
     }
 
     // checking status of the game
