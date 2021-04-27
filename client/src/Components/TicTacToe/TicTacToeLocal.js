@@ -74,6 +74,8 @@ class TicTacToeLocal extends React.Component {
         this.state = {
             square: Array(9).fill(null),
             xTurn: true,
+            xWin: 0,
+            oWin: 0,
         };
     }
 
@@ -87,6 +89,15 @@ class TicTacToeLocal extends React.Component {
         } else {
             square[i] = 'O';
         }
+
+        if (calculateWinner(square)) {
+            if (calculateWinner(square) === 'X') {
+                this.setState({xWin: this.state.xWin + 1});
+            } else {
+                this.setState({oWin: this.state.oWin + 1});
+            }
+        }
+
         this.setState({square: square});
         this.setState({xTurn: !this.state.xTurn});
     }
@@ -104,9 +115,9 @@ class TicTacToeLocal extends React.Component {
         } else if (calculateDraw(this.state.square)) {
             statusCheck = 'Draw';
         } else if (this.state.xTurn) {
-            statusCheck = 'X to go';
+            statusCheck = 'X to move';
         } else {
-            statusCheck = 'O to go';
+            statusCheck = 'O to move';
         }
 
         return (
@@ -116,7 +127,11 @@ class TicTacToeLocal extends React.Component {
                     <Board square={this.state.square} handleClick={(i) => this.handleClick(i)} />
                 </div>
                 <div className="sidebar">
-                    <div className="turn">{statusCheck}</div>
+                    <div className="turn">
+                        {statusCheck}
+                        <br /><br />
+                        {"X wins: " + this.state.xWin + ", O wins: " + this.state.oWin}
+                    </div>
                     <button onClick={() => this.reset()}>Reset Board</button>
                     <Link to="/"><button>Go to Home</button></Link>
                 </div>
