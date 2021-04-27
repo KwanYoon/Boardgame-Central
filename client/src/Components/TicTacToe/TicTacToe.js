@@ -76,8 +76,9 @@ const TicTacToe = ({ location }) => {
     const [xTurn, setXTurn] = useState(true);
     const [room, setRoom] = useState(null);
     const [move, setMove] = useState(null);
+    const [winCount, setWinCount] = useState(0);
 
-    // constants
+    // constants, variables
     const ENDPOINT = 'localhost:5000';
 
     // joining a room
@@ -127,15 +128,22 @@ const TicTacToe = ({ location }) => {
     const handleClick = (i) => {
         var newSquare = square;
         const newTurn = !xTurn;
+
+        // if there is winner or square already exists
         if (calculateWinner(newSquare) || newSquare[i]) {
             return;
         }
+
         if (xTurn && move === 'X') {
             newSquare[i] = 'X';
         } else if (!xTurn && move === 'O') {
             newSquare[i] = 'O';
         } else {
             return;
+        }
+
+        if (calculateWinner(newSquare) === move) {
+            setWinCount(winCount + 1);
         }
         
         socket.emit('move', { newSquare, newTurn, room });
@@ -146,6 +154,14 @@ const TicTacToe = ({ location }) => {
         var newSquare = Array(9).fill(null);
         const newTurn = true;
         socket.emit('move', { newSquare, newTurn, room });
+    }
+
+    // checking if room full
+    var fullRoom;
+    if (!move) {
+        fullRoom = true;
+    } else {
+        fullRoom = false;
     }
 
     // checking status of the game
@@ -160,19 +176,29 @@ const TicTacToe = ({ location }) => {
         statusCheck = 'O to move';
     }
 
-    return (
-        <div>
-            <div className="title">TicTacToe</div>
-            <div className="board">
-                <Board square={square} handleClick={(i) => handleClick(i)} />
+    if (!fullRoom) {
+        return (
+            <div>
+                <div className="title">TicTacToe</div>
+                <div className="board">
+                    <Board square={square} handleClick={(i) => handleClick(i)} />
+                </div>
+                <div className="sidebar">
+                    <div className="turn">
+                        {statusCheck}
+                        <br /><br />
+                        {"You are " + move}
+                        <br />
+                        {"Wins: " + winCount}
+                    </div>
+                    <button onClick={() => reset()}>Reset Board</button>
+                    <Link to="/"><button>Go to Home</button></Link>
+                </div>
             </div>
-            <div className="sidebar">
-                <div className="turn">{statusCheck}<br /><br />{"You are " + move}</div>
-                <button onClick={() => reset()}>Reset Board</button>
-                <Link to="/"><button>Go to Home</button></Link>
-            </div>
-        </div>
-    );
+        );
+    } else {
+        return (<div className="title">This room is full</div>)
+    }
 }
 
 export default TicTacToe;

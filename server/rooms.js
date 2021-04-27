@@ -23,14 +23,16 @@ const addUser = (room) => {
 }
 
 const removeRoom = (room) => {
+    if (!room) {
+        return { error: 'Room does not exist' };
+    }
+
     const roomName = room.name;
     const index = rooms.findIndex((room) => room.name === roomName);
 
     if (index !== -1) {
         return rooms.splice(index, 1);
     }
-
-    return { error: 'Room does not exist' };
 }
 
 const getRoom = (room) => {

@@ -23,8 +23,7 @@ io.on('connection', (socket) => {
         if (error) {
             return callback(error);
         }
-
-        console.log(newRoom);
+        
         socket.join(newRoom);
         if (newRoom.player2) {
             socket.emit('omove');
@@ -36,7 +35,6 @@ io.on('connection', (socket) => {
     // on move
     socket.on('move', ({ newSquare, newTurn, room }) => {
         const roomName = getRoom(room);
-        console.log(roomName);
         io.to(roomName).emit('moving', { newSquare, newTurn });
     });
 
