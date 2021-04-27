@@ -191,8 +191,8 @@ const TicTacToe = ({ location }) => {
                         <br />
                         {"Wins: " + winCount}
                     </div>
-                    <button onClick={() => reset()}>Reset Board</button>
-                    <Link to="/"><button>Go to Home</button></Link>
+                    <button className="tictactoeButton" onClick={() => reset()}>Reset Board</button>
+                    <Link to="/"><button className="tictactoeButton">Go to Home</button></Link>
                 </div>
             </div>
         );

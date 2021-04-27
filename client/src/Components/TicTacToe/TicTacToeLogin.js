@@ -13,12 +13,13 @@ const TicTacToeLogin = () => {
     };
 
     return (
-        <div>
-            <input placeholder="Room ID" type="text" onChange={(e) => setRoom(e.target.value)} />
+        <div className="loginPage">
+            <div className="title">TicTacToe</div>
+            <input className="roomName" placeholder="Room ID" type="text" onChange={(e) => setRoom(e.target.value)} /><br />
             <Link onClick={(e) => handleRoomId(e)} to={`/tictactoe?room=${room}`}>
-                <button type="submit">Go to room</button>
+                <button className="loginButton" type="submit">Go to room</button>
             </Link>
-            <Link to="/"><button>Go to Home</button></Link>
+            <Link to="/"><button className="loginButton">Go to Home</button></Link>
         </div>
     );
 }

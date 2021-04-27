@@ -132,8 +132,8 @@ class TicTacToeLocal extends React.Component {
                         <br /><br />
                         {"X wins: " + this.state.xWin + ", O wins: " + this.state.oWin}
                     </div>
-                    <button onClick={() => this.reset()}>Reset Board</button>
-                    <Link to="/"><button>Go to Home</button></Link>
+                    <button className="tictactoeButton" onClick={() => this.reset()}>Reset Board</button>
+                    <Link to="/"><button className="tictactoeButton">Go to Home</button></Link>
                 </div>
             </div>
         );
