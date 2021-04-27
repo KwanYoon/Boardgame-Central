@@ -75,6 +75,7 @@ const TicTacToe = ({ location }) => {
     const [square, setSquare] = useState(Array(9).fill(null));
     const [xTurn, setXTurn] = useState(true);
     const [room, setRoom] = useState(null);
+    const [move, setMove] = useState(null);
 
     // constants
     const ENDPOINT = 'localhost:5000';
@@ -95,13 +96,13 @@ const TicTacToe = ({ location }) => {
         setRoom(room);
 
         // join the room
-        socket.emit('join', { room }, () => {
-            // reaction to callback
+        socket.emit('join', { room }, (error) => {
+            console.log(error);
         });
 
         // when unmounting
         return () => {
-            socket.emit('dc');
+            socket.emit('dc', { room });
             socket.off();
         }
     }, [ENDPOINT, location.search]);
@@ -109,9 +110,16 @@ const TicTacToe = ({ location }) => {
     // effect on moving
     useEffect(() => {
         socket.on('moving', ({ newSquare, newTurn }) => {
-            
             setSquare(newSquare);
             setXTurn(newTurn);
+        });
+
+        socket.on('xmove', () => {
+            setMove('X');
+        });
+
+        socket.on('omove', () => {
+            setMove('O');
         });
     });
 
@@ -122,10 +130,12 @@ const TicTacToe = ({ location }) => {
         if (calculateWinner(newSquare) || newSquare[i]) {
             return;
         }
-        if (xTurn) {
+        if (xTurn && move === 'X') {
             newSquare[i] = 'X';
-        } else {
+        } else if (!xTurn && move === 'O') {
             newSquare[i] = 'O';
+        } else {
+            return;
         }
         
         socket.emit('move', { newSquare, newTurn, room });
@@ -145,9 +155,9 @@ const TicTacToe = ({ location }) => {
     } else if (calculateDraw(square)) {
         statusCheck = 'Draw';
     } else if (xTurn) {
-        statusCheck = 'X to go';
+        statusCheck = 'X to move';
     } else {
-        statusCheck = 'O to go';
+        statusCheck = 'O to move';
     }
 
     return (
@@ -157,7 +167,7 @@ const TicTacToe = ({ location }) => {
                 <Board square={square} handleClick={(i) => handleClick(i)} />
             </div>
             <div className="sidebar">
-                <div className="turn">{statusCheck}</div>
+                <div className="turn">{statusCheck}<br /><br />{"You are " + move}</div>
                 <button onClick={() => reset()}>Reset Board</button>
                 <Link to="/"><button>Go to Home</button></Link>
             </div>

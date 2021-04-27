@@ -7,6 +7,8 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
+const { addUser, removeRoom, getRoom } = require('./rooms');
+
 server.listen(PORT, () => {
     console.log(`listening on *: ${PORT}`);
 });
@@ -14,22 +16,34 @@ server.listen(PORT, () => {
 app.use(router);
 
 io.on('connection', (socket) => {
-    // when a user connects
-    console.log('We have a new connection');
-
     // on join (TikTacToe.js)
     socket.on('join', ({ room }, callback) => {
-        socket.join(room);
-        callback();
+        const { error, newRoom } = addUser(room);
+
+        if (error) {
+            return callback(error);
+        }
+
+        console.log(newRoom);
+        socket.join(newRoom);
+        if (newRoom.player2) {
+            socket.emit('omove');
+        } else {
+            socket.emit('xmove');
+        }
     });
 
     // on move
     socket.on('move', ({ newSquare, newTurn, room }) => {
-        io.to(room).emit('moving', { newSquare, newTurn });
+        const roomName = getRoom(room);
+        console.log(roomName);
+        io.to(roomName).emit('moving', { newSquare, newTurn });
     });
 
     // when the user disconnects
-    socket.on('dc', () => {
+    socket.on('dc', ({ room }) => {
+        const roomName = getRoom(room);
+        removeRoom(roomName);
         console.log('User has left');
     });
 });
