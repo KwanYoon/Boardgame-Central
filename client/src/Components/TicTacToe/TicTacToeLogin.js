@@ -20,6 +20,7 @@ const TicTacToeLogin = () => {
                 <button className="loginButton" type="submit">Go to room</button>
             </Link>
             <Link to="/"><button className="loginButton">Go to Home</button></Link>
+            <div className="howToUse">How to play: Enter the same room ID as your friend and start playing!</div>
         </div>
     );
 }

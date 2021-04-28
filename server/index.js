@@ -42,6 +42,6 @@ io.on('connection', (socket) => {
     socket.on('dc', ({ room }) => {
         const roomName = getRoom(room);
         removeRoom(roomName);
-        console.log('User has left');
+        //console.log('User has left');
     });
 });
