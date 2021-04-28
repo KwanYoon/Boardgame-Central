@@ -82,7 +82,7 @@ const TicTacToe = ({ location }) => {
     // constants, variables
     const ENDPOINT = 'localhost:5000';
 
-    // joining a room
+    // creating / joining a room
     useEffect(() => {
         // making a room based on current url
         const { room } = queryString.parse(location.search);
@@ -98,7 +98,7 @@ const TicTacToe = ({ location }) => {
         setRoom(room);
 
         // join the room
-        socket.emit('join', { room }, (error) => {
+        socket.emit('joinTicTacToe', { room }, (error) => {
             console.log(error);
         });
 
@@ -210,9 +210,19 @@ const TicTacToe = ({ location }) => {
     }
 
     if (fullRoom) {
-        return (<div className="title">This room is full</div>);
+        return (
+            <div className="loginPage">
+                <div className="title">This room is full</div>
+                <Link to="/"><button className="tictactoeButton">Go to Home</button></Link>
+            </div>
+        );
     } else if (!gameStart) {
-        return (<div className="title">Waiting for other player. Try resetting if game does not start immediately.</div>);
+        return (
+            <div className="loginPage">
+                <div className="title">Waiting for other player. Try resetting if game does not start immediately.</div>
+                <Link to="/"><button className="tictactoeButton">Go to Home</button></Link>
+            </div>
+        );
     } else {
         return (
             <div>

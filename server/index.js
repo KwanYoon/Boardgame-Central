@@ -18,7 +18,7 @@ app.use(router);
 // TicTacToe functions
 io.on('connection', (socket) => {
     // on join (TikTacToe.js)
-    socket.on('join', ({ room }, callback) => {
+    socket.on('joinTicTacToe', ({ room }, callback) => {
         const { error, newRoom } = addUser(room);
 
         if (error) {
