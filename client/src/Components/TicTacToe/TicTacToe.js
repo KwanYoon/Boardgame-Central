@@ -104,7 +104,7 @@ const TicTacToe = ({ location }) => {
 
         // when unmounting
         return () => {
-            socket.emit('dc', { room });
+            socket.emit('dcTicTacToe', { room });
             socket.off();
         }
     }, [ENDPOINT, location.search]);
@@ -125,7 +125,7 @@ const TicTacToe = ({ location }) => {
         // when player is o
         socket.on('omove', () => {
             setMove('O');
-            socket.emit('play', room);
+            socket.emit('playTicTacToe', room);
         });
 
         // when game starts
@@ -170,15 +170,15 @@ const TicTacToe = ({ location }) => {
             setWinCount(winCount + 1);
         }
         
-        socket.emit('move', { newSquare, newTurn, room });
+        socket.emit('moveTicTacToe', { newSquare, newTurn, room });
     }
 
     // function to reset
     const reset = () => {
         var newSquare = Array(9).fill(null);
         const newTurn = true;
-        socket.emit('reset', room);
-        socket.emit('move', { newSquare, newTurn, room });
+        socket.emit('resetTicTacToe', room);
+        socket.emit('moveTicTacToe', { newSquare, newTurn, room });
     }
 
     // checking if room full

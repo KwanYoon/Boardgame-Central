@@ -17,7 +17,7 @@ app.use(router);
 
 // TicTacToe functions
 io.on('connection', (socket) => {
-    // on join (TikTacToe.js)
+    // on joining TicTacToe
     socket.on('joinTicTacToe', ({ room }, callback) => {
         const { error, newRoom } = addUser(room);
 
@@ -33,26 +33,26 @@ io.on('connection', (socket) => {
         }
     });
 
-    // on move
-    socket.on('move', ({ newSquare, newTurn, room }) => {
+    // on moving TicTacToe
+    socket.on('moveTicTacToe', ({ newSquare, newTurn, room }) => {
         const roomName = getRoom(room);
         io.to(roomName).emit('moving', { newSquare, newTurn });
     });
 
-    // on play start
-    socket.on('play', (room) => {
+    // on play start TicTacToe
+    socket.on('playTicTacToe', (room) => {
         const roomName = getRoom(room);
         io.to(roomName).emit('playStart');
     });
 
-    // on reset
-    socket.on('reset', (room) => {
+    // on reset TicTacToe
+    socket.on('resetTicTacToe', (room) => {
         const roomName = getRoom(room);
         io.to(roomName).emit('changeTurn');
     });
 
-    // when the user disconnects
-    socket.on('dc', ({ room }) => {
+    // when the user disconnects TicTacToe
+    socket.on('dcTicTacToe', ({ room }) => {
         const roomName = getRoom(room);
         io.to(roomName).emit('alertLeave');
         removeRoom(roomName);
