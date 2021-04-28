@@ -77,6 +77,7 @@ const TicTacToe = ({ location }) => {
     const [room, setRoom] = useState(null);
     const [move, setMove] = useState(null);
     const [winCount, setWinCount] = useState(0);
+    const [play, setPlay] = useState(null);
 
     // constants, variables
     const ENDPOINT = 'localhost:5000';
@@ -108,19 +109,42 @@ const TicTacToe = ({ location }) => {
         }
     }, [ENDPOINT, location.search]);
 
-    // effect on moving
+    // socket effects
     useEffect(() => {
+        // on move
         socket.on('moving', ({ newSquare, newTurn }) => {
             setSquare(newSquare);
             setXTurn(newTurn);
         });
 
+        // when player is x
         socket.on('xmove', () => {
             setMove('X');
         });
 
+        // when player is o
         socket.on('omove', () => {
             setMove('O');
+            socket.emit('play', room);
+        });
+
+        // when game starts
+        socket.on('playStart', () => {
+            setPlay(true);
+        });
+
+        // on move switch
+        socket.on('changeTurn', () => {
+            if (move === 'X') {
+                setMove('O');
+            } else {
+                setMove('X');
+            }
+        });
+
+        // when other player leaves
+        socket.on('alertLeave', () => {
+            setPlay(false);
         });
     });
 
@@ -153,6 +177,7 @@ const TicTacToe = ({ location }) => {
     const reset = () => {
         var newSquare = Array(9).fill(null);
         const newTurn = true;
+        socket.emit('reset', room);
         socket.emit('move', { newSquare, newTurn, room });
     }
 
@@ -162,6 +187,14 @@ const TicTacToe = ({ location }) => {
         fullRoom = true;
     } else {
         fullRoom = false;
+    }
+
+    // checking if game started
+    var gameStart;
+    if (!play) {
+        gameStart = false;
+    } else {
+        gameStart = true;
     }
 
     // checking status of the game
@@ -176,7 +209,11 @@ const TicTacToe = ({ location }) => {
         statusCheck = 'O to move';
     }
 
-    if (!fullRoom) {
+    if (fullRoom) {
+        return (<div className="title">This room is full</div>);
+    } else if (!gameStart) {
+        return (<div className="title">Waiting for other player. Try resetting if game does not start immediately.</div>);
+    } else {
         return (
             <div>
                 <div className="title">TicTacToe</div>
@@ -196,8 +233,6 @@ const TicTacToe = ({ location }) => {
                 </div>
             </div>
         );
-    } else {
-        return (<div className="title">This room is full</div>)
     }
 }
 
