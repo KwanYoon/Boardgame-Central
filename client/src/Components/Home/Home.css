@@ -10,11 +10,15 @@
 
 .gameSection {
     padding-top: 30px;
-    width: 50%;
+    width: 40%;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 100px;
     height: 400px;
     flex: left;
     background-color: darkblue;
     border-radius: 20%;
+    float: left;
 }
 
 .gameTitle {
