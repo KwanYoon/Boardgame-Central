@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Connect4.css'
 
 // constants
@@ -64,8 +65,8 @@ function winnerCheck(columns) {
 // individual square
 const Square = (props) => {
     return (
-        <div className="square">
-            <div className="circle" style={{backgroundColor: props.color}} />
+        <div className="squareConnect4">
+            <div className="circleConnect4" style={{backgroundColor: props.color}} />
         </div>
     );
 }
@@ -74,25 +75,25 @@ const Square = (props) => {
 const Board = (props) => {
     return (
         <div >
-            <button className="columns" onClick={() => props.handleClick(0)}>
+            <button className="columnsConnect4" onClick={() => props.handleClick(0)}>
                 {props.columns(0)}
             </button>
-            <button className="columns" onClick={() => props.handleClick(1)}>
+            <button className="columnsConnect4" onClick={() => props.handleClick(1)}>
                 {props.columns(1)}
             </button>
-            <button className="columns" onClick={() => props.handleClick(2)}>
+            <button className="columnsConnect4" onClick={() => props.handleClick(2)}>
                 {props.columns(2)}
             </button>
-            <button className="columns" onClick={() => props.handleClick(3)}>
+            <button className="columnsConnect4" onClick={() => props.handleClick(3)}>
                 {props.columns(3)}
             </button>
-            <button className="columns" onClick={() => props.handleClick(4)}>
+            <button className="columnsConnect4" onClick={() => props.handleClick(4)}>
                 {props.columns(4)}
             </button>
-            <button className="columns" onClick={() => props.handleClick(5)}>
+            <button className="columnsConnect4" onClick={() => props.handleClick(5)}>
                 {props.columns(5)}
             </button>
-            <button className="columns" onClick={() => props.handleClick(6)}>
+            <button className="columnsConnect4" onClick={() => props.handleClick(6)}>
                 {props.columns(6)}
             </button>
         </div>
@@ -167,7 +168,7 @@ const Connect4Local = () => {
 
     return (
         <div>
-            <div className="title">Connect 4</div>
+            <div className="titleConnect4">Connect 4</div>
             <Board handleClick={(i) => handleClick(i)} columns={(i) => columns(i)} />
             <div className="sidebarConnect4">
                 <div className="turnConnect4">
@@ -176,6 +177,7 @@ const Connect4Local = () => {
                     {"Red wins: " + winCount[0] + ", Yellow wins: " + winCount[1]}
                 </div>
                 <button className="buttonConnect4" onClick={() => reset()}>Reset Game</button>
+                <Link to="/"><button className="buttonConnect4">Go Home</button></Link>
             </div>
         </div>
     );
