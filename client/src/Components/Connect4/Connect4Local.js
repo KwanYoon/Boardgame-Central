@@ -34,13 +34,14 @@ const Board = () => {
     const columns = (i) => {
         var squares = i.slice().reverse();
         var len = squares.length;
+        var output = [];
         for (let k = 0; k < 6 - len; k++) {
-            squares.push(square('#bbb'));
+            output.push(square('#bbb'));
         }
         for (let k = 6 - len; k < 6; k++) {
-            squares.push(square(squares[k - (6 - len)]));
+            output.push(square(squares[k - (6 - len)]));
         }
-        return squares;
+        return output;
     }
 
     return (
