@@ -10,7 +10,8 @@ const Square = (props) => {
 }
 
 const Board = () => {
-    const [column, setColumn] = useState([0, 0, 0, 0, 0, 0, 0]);
+    const [column, setColumn] = useState([[], [], [], [], [], [], []]);
+    const [color, setColor] = useState('red');
 
     const square = (i) => {
         return <Square color={i} />;
@@ -18,22 +19,52 @@ const Board = () => {
 
     const handleClick = (i) => {
         var newColumn = column.slice();
-        newColumn[i]++;
+        if (newColumn[i].length >= 6) {
+            return;
+        }
+        newColumn[i].push(color);
+        if (color === 'red') {
+            setColor('yellow');
+        } else {
+            setColor('red');
+        }
         setColumn(newColumn);
     }
 
     const columns = (i) => {
-        var squares = [];
-        for (let k = 0; k < 6; k++) {
-            squares.push(square(i));
+        var squares = i.slice().reverse();
+        var len = squares.length;
+        for (let k = 0; k < 6 - len; k++) {
+            squares.push(square('#bbb'));
+        }
+        for (let k = 6 - len; k < 6; k++) {
+            squares.push(square(squares[k - (6 - len)]));
         }
         return squares;
     }
 
     return (
-        <div>
+        <div className="boardConnect4">
+            <button className="columns" onClick={() => handleClick(0)}>
+                {columns(column[0])}
+            </button>
             <button className="columns" onClick={() => handleClick(1)}>
-                {columns('#bbb')}
+                {columns(column[1])}
+            </button>
+            <button className="columns" onClick={() => handleClick(2)}>
+                {columns(column[2])}
+            </button>
+            <button className="columns" onClick={() => handleClick(3)}>
+                {columns(column[3])}
+            </button>
+            <button className="columns" onClick={() => handleClick(4)}>
+                {columns(column[4])}
+            </button>
+            <button className="columns" onClick={() => handleClick(5)}>
+                {columns(column[5])}
+            </button>
+            <button className="columns" onClick={() => handleClick(6)}>
+                {columns(column[6])}
             </button>
         </div>
     );
