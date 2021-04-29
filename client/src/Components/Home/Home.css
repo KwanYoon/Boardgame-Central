@@ -47,4 +47,5 @@
 .gameImage {
     height: 50%;
     width: auto;
+    border-radius: 20%;
 }

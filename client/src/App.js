@@ -7,6 +7,7 @@ import TicTacToeLocal from './Components/TicTacToe/TicTacToeLocal';
 import TicTacToeLogin from './Components/TicTacToe/TicTacToeLogin';
 import TicTacToe from './Components/TicTacToe/TicTacToe';
 import Connect4Local from './Components/Connect4/Connect4Local';
+import Connect4Login from './Components/Connect4/Connect4Login';
 
 const App = () => {
     return (
@@ -17,6 +18,7 @@ const App = () => {
                 <Route exact path='/tictactoeonline' component={TicTacToeLogin} />
                 <Route exact path='/tictactoe' component={TicTacToe} />
                 <Route exact path='/connect4local' component={Connect4Local} />
+                <Route exact path='/connect4online' component={Connect4Login} />
             </Switch>
         </BrowserRouter>
     );
