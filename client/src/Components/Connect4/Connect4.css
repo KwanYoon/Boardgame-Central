@@ -35,4 +35,23 @@
 .boardConnect4 {
     margin-left: 100px;
     width: 700px;
+    float: left;
+}
+
+.sidebarConnect4 {
+    margin-left: 650px;
+    margin-right: 100px;
+    padding-top: 150px;
+    text-align: center;
+}
+
+.turnConnect4 {
+    font-size: xx-large;
+    margin-bottom: 100px;
+}
+
+.buttonConnect4 {
+    font-size: 30px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
