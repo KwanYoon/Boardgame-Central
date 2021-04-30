@@ -113,7 +113,7 @@ const Connect4 = ({ location }) => {
     const [winCount, setWinCount] = useState(0);
 
     // constants, variables
-    const ENDPOINT = 'localhost:5000';
+    const ENDPOINT = 'https://boardgame-central.herokuapp.com/';
 
     // creating / joining a room
     useEffect (() => {

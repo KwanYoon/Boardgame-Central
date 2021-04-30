@@ -79,7 +79,7 @@ const TicTacToe = ({ location }) => {
     const [play, setPlay] = useState(null);
 
     // constants, variables
-    const ENDPOINT = 'localhost:5000';
+    const ENDPOINT = 'https://boardgame-central.herokuapp.com/';
 
     // creating / joining a room
     useEffect(() => {

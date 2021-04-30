@@ -6,6 +6,7 @@ const router = require('./router');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
+const cors = require('cors');
 
 const { addUserTicTacToe, removeRoomTicTacToe, getRoomTicTacToe } = require('./TicTacToeRooms');
 const { addUserConnect4, removeRoomConnect4, getRoomConnect4 } = require('./Connect4Rooms');
@@ -15,6 +16,7 @@ server.listen(PORT, () => {
 });
 
 app.use(router);
+app.use(cors());
 
 // TicTacToe functions
 io.on('connection', (socket) => {
