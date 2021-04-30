@@ -219,7 +219,7 @@ const TicTacToe = ({ location }) => {
     } else if (!gameStart) {
         return (
             <div className="loginPage">
-                <div className="title">Waiting for other player. Try resetting if game does not start immediately.</div>
+                <div className="title">Waiting for other player. Try resetting if game does not start immediately.<br />Your code is : {room}</div>
                 <Link to="/"><button className="tictactoeButton">Go to Home</button></Link>
             </div>
         );
