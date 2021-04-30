@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import queryString from 'query-string';
+import io from 'socket.io-client';
 import './Connect4.css'
+
+let socket;
 
 // constants
 const HEIGHT = 6;
@@ -100,14 +104,87 @@ const Board = (props) => {
     );
 }
 
-const Connect4 = () => {
+const Connect4 = ({ location }) => {
     const [column, setColumn] = useState([Array(6).fill(null), Array(6).fill(null), Array(6).fill(null), Array(6).fill(null), Array(6).fill(null), Array(6).fill(null), Array(6).fill(null)]);
     const [color, setColor] = useState('red');
-    const [winCount, setWinCount] = useState([0, 0]);
+    const [room, setRoom] = useState(null);
+    const [move, setMove] = useState(null);
+    const [play, setPlay] = useState(null);
+    const [winCount, setWinCount] = useState(0);
+
+    // constants, variables
+    const ENDPOINT = 'localhost:5000';
+
+    // creating / joining a room
+    useEffect (() => {
+        // making a room based on current url
+        const { room } = queryString.parse(location.search);
+
+        var connectionOptions = {
+            "force new connection" : true,
+            "reconnectionAttempts": "Infinity", 
+            "timeout" : 10000,                  
+            "transports" : ["websocket"]
+        };
+        socket = io.connect(ENDPOINT, connectionOptions);
+
+        setRoom(room);
+
+        // joining room
+        socket.emit('joinConnect4', { room }, (error) => {
+            console.log(error);
+        });
+
+        // when unmounting
+        return () => {
+            socket.emit('dcConnect4', { room });
+            socket.off();
+        };
+    }, [ENDPOINT, location.search]);
+
+    // socket effects
+    useEffect(() => {
+        // moving
+        socket.on('movingConnect4', ({ newColumn, newColor }) => {
+            setColumn(newColumn);
+            setColor(newColor);
+        });
+
+        // when red move
+        socket.on('redmove', () => {
+            setMove('red');
+        });
+
+        // when yellow move
+        socket.on('yellowmove', () => {
+            setMove('yellow');
+            socket.emit('playConnect4', room);
+        });
+
+        // when game starts
+        socket.on('playStartConnect4', () => {
+            console.log("this works");
+            setPlay(true);
+        });
+
+        // on move switch
+        socket.on('changeColorConnect4', () => {
+            if (move === 'red') {
+                setMove('yellow');
+            } else {
+                setMove('red');
+            }
+        });
+
+        // when other player leaves
+        socket.on('alertLeaveConnect4', () => {
+            setPlay(false);
+        });
+    });
 
     // creating a square based on given color
     const square = (i) => {
-        return <Square color={i} />;
+        return <Square color={i} key={Math.random().toString(36).substr(2, 9)} />;
     }
 
     // creating column number i
@@ -137,28 +214,52 @@ const Connect4 = () => {
         }
 
         // set and change color
-        newColumn[i][len] = color;
-        if (color === 'red') {
-            setColor('yellow');
+        var newColor;
+        if (move === 'red' && color === 'red') {
+            newColor = 'yellow';
+        } else if (move === 'yellow' && color === 'yellow') {
+            newColor = 'red';
         } else {
-            setColor('red');
+            return;
         }
+        // make move
+        newColumn[i][len] = color;
+
+        setColor(newColor);
         setColumn(newColumn);
 
-        // checking if there is winner
-        if (winnerCheck(column) === 'red') {
-            setWinCount([winCount[0] + 1, winCount[1]])
-        } else if (winnerCheck(column) === 'yellow') {
-            setWinCount([winCount[0], winCount[1] + 1])
+        if (winnerCheck(newColumn) === move) {
+            setWinCount(winCount + 1);
         }
+
+        socket.emit('moveConnect4', { newColumn, newColor, room });
     }
 
     // resetting board
     const reset = () => {
-        setColor('red');
-        setColumn([Array(6).fill(null), Array(6).fill(null), Array(6).fill(null), Array(6).fill(null), Array(6).fill(null), Array(6).fill(null), Array(6).fill(null)]);
+        const newColor = 'red';
+        const newColumn = ([Array(6).fill(null), Array(6).fill(null), Array(6).fill(null), Array(6).fill(null), Array(6).fill(null), Array(6).fill(null), Array(6).fill(null)]);
+        socket.emit('resetConnect4', room);
+        socket.emit('moveConnect4', { newColumn, newColor, room });
     }
 
+    // checking if room is full
+    var fullRoom;
+    if (!move) {
+        fullRoom = true;
+    } else {
+        fullRoom = false;
+    }
+
+    // checking if game started
+    var gameStart;
+    if (!play) {
+        gameStart = false;
+    } else {
+        gameStart = true;
+    }
+
+    // checking current status of the game
     var statusCheck;
     if (winnerCheck(column)) {
         statusCheck = 'Winner is: ' + winnerCheck(column);
@@ -166,21 +267,39 @@ const Connect4 = () => {
         statusCheck = 'Turn: ' + color;
     }
 
-    return (
-        <div>
-            <div className="titleConnect4">Connect 4</div>
-            <Board handleClick={(i) => handleClick(i)} columns={(i) => columns(i)} />
-            <div className="sidebarConnect4">
-                <div className="turnConnect4">
-                    {statusCheck}
-                    <br /><br />
-                    {"Red wins: " + winCount[0] + ", Yellow wins: " + winCount[1]}
-                </div>
-                <button className="buttonConnect4" onClick={() => reset()}>Reset Game</button>
-                <Link to="/"><button className="buttonConnect4">Go Home</button></Link>
+    if (fullRoom) {
+        return (
+            <div className="loginPageConnect4">
+                <div className="titleConnect4">This room is full</div>
+                <Link to="/"><button className="buttonConnect4">Go to Home</button></Link>
             </div>
-        </div>
-    );
+        );
+    } else if (!gameStart) {
+        return (
+            <div className="loginPageConnect4">
+                <div className="titleConnect4">Waiting for other player. Try resetting if game does not start immediately.<br />Your code is : {room}</div>
+                <Link to="/"><button className="buttonConnect4">Go to Home</button></Link>
+            </div>
+        );
+    } else {
+        return (
+            <div>
+                <div className="titleConnect4">Connect 4</div>
+                <Board handleClick={(i) => handleClick(i)} columns={(i) => columns(i)} />
+                <div className="sidebarConnect4">
+                    <div className="turnConnect4">
+                        {statusCheck}
+                        <br />
+                        {"You are: " + move}
+                        <br /><br />
+                        {"Wins: " + winCount}
+                    </div>
+                    <button className="buttonConnect4" onClick={() => reset()}>Reset Game</button>
+                    <Link to="/"><button className="buttonConnect4">Go Home</button></Link>
+                </div>
+            </div>
+        );
+    }
 }
 
 export default Connect4;

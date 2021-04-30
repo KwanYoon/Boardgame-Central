@@ -107,7 +107,7 @@ const Connect4Local = () => {
 
     // creating a square based on given color
     const square = (i) => {
-        return <Square color={i} />;
+        return <Square color={i} key={Math.random().toString(36).substr(2, 9)} />;
     }
 
     // creating column number i

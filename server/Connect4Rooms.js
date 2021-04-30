@@ -1,11 +1,11 @@
-// these functions keep track of the TicTacToe rooms present
+// these functions keep track of the Connect4 rooms that are present
 
 const rooms = [];
 
-const addUserTicTacToe = (room) => {
+const addUserConnect4 = (room) => {
     const roomName = room;
-    const existingRoom = rooms.find((room) => room.name === roomName);
-    
+    const existingRoom = rooms.find((curr) => curr.name === roomName);
+
     // if there is existing room
     if (existingRoom) {
         if (existingRoom.player1 && existingRoom.player2) {
@@ -13,20 +13,20 @@ const addUserTicTacToe = (room) => {
             return { error: 'Room is full' };
         } else {
             // if there is only player 1
-            existingRoom.player2 = 'O';
+            existingRoom.player2 = 'yellow';
             const newRoom = existingRoom;
             return { newRoom };
         }
     }
 
     // if room does not exist
-    const newRoom = { name: roomName, player1: 'X', player2: null };
+    const newRoom = { name: roomName, player1: 'red', player2: null };
     rooms.push(newRoom);
 
     return { newRoom };
 }
 
-const removeRoomTicTacToe = (room) => {
+const removeRoomConnect4 = (room) => {
     // if room does not exist
     if (!room) {
         return { error: 'Room does not exist' };
@@ -34,7 +34,7 @@ const removeRoomTicTacToe = (room) => {
 
     // finding room
     const roomName = room.name;
-    const index = rooms.findIndex((room) => room.name === roomName);
+    const index = rooms.findIndex((curr) => curr.name === roomName);
 
     // removing room
     if (index !== -1) {
@@ -44,9 +44,9 @@ const removeRoomTicTacToe = (room) => {
     return { error: 'Room does not exist' };
 }
 
-const getRoomTicTacToe = (room) => {
+const getRoomConnect4 = (room) => {
     const roomName = room;
-    return rooms.find((room) => room.name === roomName);
+    return rooms.find((curr) => curr.name === roomName);
 }
 
-module.exports = { addUserTicTacToe, removeRoomTicTacToe, getRoomTicTacToe };
+module.exports = { addUserConnect4, removeRoomConnect4, getRoomConnect4 };

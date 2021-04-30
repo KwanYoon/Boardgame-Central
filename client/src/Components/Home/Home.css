@@ -44,6 +44,12 @@
     transform: scale(1.2);
 }
 
+@media (max-width: 1000px) {
+    .gameSection {
+        width: 90%;
+    }
+}
+
 .gameImage {
     height: 50%;
     width: auto;

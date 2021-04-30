@@ -71,7 +71,6 @@ const Board = (props) => {
 }
 
 const TicTacToe = ({ location }) => {
-    // states
     const [square, setSquare] = useState(Array(9).fill(null));
     const [xTurn, setXTurn] = useState(true);
     const [room, setRoom] = useState(null);
@@ -87,7 +86,7 @@ const TicTacToe = ({ location }) => {
         // making a room based on current url
         const { room } = queryString.parse(location.search);
 
-        var connectionOptions =  {
+        var connectionOptions = {
             "force new connection" : true,
             "reconnectionAttempts": "Infinity", 
             "timeout" : 10000,                  
@@ -106,7 +105,7 @@ const TicTacToe = ({ location }) => {
         return () => {
             socket.emit('dcTicTacToe', { room });
             socket.off();
-        }
+        };
     }, [ENDPOINT, location.search]);
 
     // socket effects
@@ -158,6 +157,7 @@ const TicTacToe = ({ location }) => {
             return;
         }
 
+        // make the move
         if (xTurn && move === 'X') {
             newSquare[i] = 'X';
         } else if (!xTurn && move === 'O') {
