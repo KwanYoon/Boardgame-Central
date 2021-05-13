@@ -3,3 +3,19 @@
     text-align: center;
     font-weight: bold;
 }
+
+.squareReversi {
+    width: 80px;
+    height: 80px;
+    border: 10px;
+    border-color: black;
+    border-style: double;
+    background-color: darkgreen;
+    float: left;
+    cursor: pointer;
+}
+
+.boardReversi {
+    margin-left: 100px;
+    width: 640px;
+}

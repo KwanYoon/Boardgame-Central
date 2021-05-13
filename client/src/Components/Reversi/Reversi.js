@@ -5,7 +5,7 @@ import './Reversi.css';
 const Square = () => {
     return (
         <div>
-
+            
         </div>
     )
 }
