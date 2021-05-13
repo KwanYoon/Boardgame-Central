@@ -10,6 +10,7 @@ import Connect4Local from './Components/Connect4/Connect4Local';
 import Connect4Login from './Components/Connect4/Connect4Login';
 import Connect4 from './Components/Connect4/Connect4';
 import ReversiLocal from './Components/Reversi/ReversiLocal';
+import Reversi from './Components/Reversi/Reversi';
 
 const App = () => {
     return (
@@ -23,6 +24,7 @@ const App = () => {
                 <Route exact path='/connect4online' component={Connect4Login} />
                 <Route exact path='/connect4' component={Connect4} />
                 <Route exact path='/reversilocal' component={ReversiLocal} />
+                <Route exact path='/reversi' component={Reversi} />
             </Switch>
         </BrowserRouter>
     );
