@@ -4,8 +4,12 @@ import './Reversi.css';
 
 // individual squares
 const Square = () => {
+    const handleClick = () => {
+        console.log("this works");
+    }
+
     return (
-        <button className="squareReversi" />
+        <button className="squareReversi" onClick={() => handleClick()} />
     )
 }
 
