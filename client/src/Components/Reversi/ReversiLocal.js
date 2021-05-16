@@ -5,7 +5,7 @@ import './Reversi.css';
 // individual squares
 const Square = () => {
     const handleClick = () => {
-        console.log("this works");
+        
     }
 
     return (
