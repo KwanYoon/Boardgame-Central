@@ -16,6 +16,7 @@ const Square = () => {
 // game board
 const Board = () => {
     const [board, setBoard] = useState();
+    
     return (
         <div className="boardReversi">
             <Square /><Square /><Square /><Square /><Square /><Square /><Square /><Square />
